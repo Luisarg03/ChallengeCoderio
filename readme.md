@@ -9,7 +9,6 @@
   </p>
 </p>
 
-
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
@@ -44,6 +43,19 @@ El pipeline en desarollo integra:
    ```sh
    localhost:5050
    ```
+#### LOGIN:
+  * user: admin@admin.com
+  * password: root
+
+<img src="img_readme/login.png" alt="Logo" width="75%">
+
+#### SERVER
+  * host: pg_container
+  * port: 5432
+  * user: root
+  * password: root
+
+<img src="img_readme/connect.png" alt="Logo" width="75%">
 
 
 <!-- USAGE EXAMPLES -->
