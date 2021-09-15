@@ -27,8 +27,8 @@ def engine_db():
     drivername='postgresql+psycopg2',
     username='root',
     password='root',
-    # host='pg_container',
-    host='localhost',
+    host='pg_container',
+    # host='localhost',
     port='5432',
     database='coderio',
     )

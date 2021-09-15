@@ -12,6 +12,7 @@ print('SCRIPT FUNCIONANDO')
 
 
 if __name__ == '__main__':
+    time.sleep(15)
     start = time.time()
     engine_db = engine_db()
     print('CREATE MODEL...')
