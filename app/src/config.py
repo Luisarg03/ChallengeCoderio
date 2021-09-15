@@ -3,6 +3,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.engine.url import URL
 
+### USER CONFIG APP
 config_user = dict(
     bucket = "coderiodatalake",
     raw_schema = 'DLKRAW',
@@ -13,14 +14,14 @@ config_user = dict(
     file_increment = 'dataset_increment'
 )
 
-### USER DUMMY
+### USER DUMMY -> Bucket with restrictions and limitations
 config_aws = dict(
     service_name='s3',
     aws_access_key_id='AKIAYKHAW5NFPIOLKAUC',
     aws_secret_access_key='4WkCZEuR/dYNVRRJqN7zQRdfRFMJsicjxlqFtbTg'
 )
 
-
+### CONFIG URI DB
 def engine_db():
     config_db = dict(
     drivername='postgresql+psycopg2',

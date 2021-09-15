@@ -8,6 +8,20 @@ from sqlalchemy import types
 
 
 def ping_aws(client, bucket):
+    '''
+    TEST CONNECTION WITH AWS
+
+    Parameters
+    ----------
+    client : boto.client obj
+        client obj boto3
+    bucket: str
+        Name bucket s3
+    
+    Returns
+    ---------
+    bool
+    '''
     while True:
         status = client.list_objects(Bucket=bucket)['ResponseMetadata']['HTTPStatusCode']
         if status == 200:
@@ -18,10 +32,30 @@ def ping_aws(client, bucket):
     return True
 
 
-def extract(engine, config_aws, schema, bucket, file_source):
+def extract(engine, config_aws, schema, bucket, file_source):    
+    '''
+    Extract files of S3
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    config_aws: dict
+        dict config credentials aws
+    schema : str
+        schema db
+    bucket: str
+        Name bucket s3
+    file_source: str
+        name or extract of path in aws s3
+    
+    Returns
+    ---------
+    rows_insert: int
+        number of row insert in db
+    '''
 
     client = boto3.client(**config_aws)
-
     rows_insert = []
 
     for key in client.list_objects(Bucket=bucket)['Contents']:
@@ -50,6 +84,26 @@ def extract(engine, config_aws, schema, bucket, file_source):
 
 
 def create_tables_work(engine, stg_schema, raw_schema, file_source):
+    '''
+    CREATE TABLES WORK IN DB
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    config_aws: dict
+        dict config credentials aws
+    stg_schema : str
+        schema db
+    raw_schema : str
+        schema db
+    file_source: str
+        name or extract of path in aws s3
+    
+    Returns
+    ---------
+    None
+    '''
 
     query_sys = """ SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = 'DLKRAW' """
     tables = pd.read_sql_query(query_sys, con=engine)
