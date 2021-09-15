@@ -44,18 +44,18 @@ El pipeline en desarollo integra:
    localhost:5050
    ```
 #### LOGIN:
-  * user: admin@admin.com
-  * password: root
+  * user: _admin@admin.com_
+  * password: _root_
 
-<img src="img_readme/login.png" alt="Logo" width="75%">
+<img src="img_readme/login.png" alt="Logo" width="65%">
 
 #### SERVER
-  * host: pg_container
-  * port: 5432
-  * user: root
-  * password: root
+  * host: _pg_container_
+  * port: _5432_
+  * user: _root_
+  * password: _root_
 
-<img src="img_readme/connect.png" alt="Logo" width="75%">
+<img src="img_readme/connect.png" alt="Logo" width="65%">
 
 
 <!-- USAGE EXAMPLES -->
