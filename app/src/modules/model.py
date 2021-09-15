@@ -1,13 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Declare models and relationships."""
 from sqlalchemy import Column, DateTime, ForeignKey, Integer, Float, String, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship ### Try
 from sqlalchemy.sql import func
 from sqlalchemy.ext.declarative import declarative_base
 
 
 def model_create(engine_db):
+    '''
+    Create tables model IN DB
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    
+    Returns
+    ---------
+    None
+    '''
     Base = declarative_base()
 
     class Category(Base):

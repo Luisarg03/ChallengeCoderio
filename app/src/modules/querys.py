@@ -2,6 +2,19 @@
 # -*- coding: utf-8 -*-
 
 def exect_querys(engine):
+    '''
+    run querys inserts in tablas WH
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    
+    Returns
+    ---------
+    None
+    '''
+
     category = """
         ALTER SEQUENCE "WH"."DIM_CATEGORY_PK_seq" RESTART;
         TRUNCATE TABLE "WH"."DIM_CATEGORY";

@@ -6,10 +6,27 @@ import numpy as np
 from sqlalchemy import types
 
 def clear_duplicated(engine, schema, file_source):
+    '''
+    run query to delete duplicates
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    schema : str
+        schema db
+    file_source: str
+        name or extract of path in aws s3
+    
+    Returns
+    ---------
+    None
+    '''
 
     query_sys = """ SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '{}' """.format(schema)
     tables = pd.read_sql_query(query_sys, con=engine)
 
+    # Filter tables to use in db
     if 'init' in file_source:
         tables = tables.loc[tables['table_name'].str.contains('INIT')]
     elif 'increment' in file_source:
@@ -42,12 +59,31 @@ def clear_duplicated(engine, schema, file_source):
 
 
 def create_fct_table(engine, stg_schema, cur_schema, file_source):
+    '''
+    Normalize data and create stg_fct_table
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    stg_schema : str
+        schema db
+    cur_schema : str
+        schema db
+    file_source: str
+        name or extract of path in aws s3
+    
+    Returns
+    ---------
+    None
+    '''
 
     name_table = "FCT_SALES"
     query_sys = """ SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '{}' """.format(stg_schema)
 
     tables = pd.read_sql_query(query_sys, con=engine)
 
+    # Filter tables to use in db
     if 'init' in file_source:
         tables = tables.loc[tables['table_name'].str.contains('INIT')]
     elif 'increment' in file_source:
@@ -61,8 +97,11 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
         
         for df in pd.read_sql_query(query, con=engine, chunksize=20000):
 
+            # Set cols best type Datetime -> infer_datetime_format=True 
             df['updated_date'] = pd.to_datetime(df['updated_date'], infer_datetime_format=True)
             df['created_date'] = pd.to_datetime(df['created_date'], infer_datetime_format=True)
+
+            # Set cols min type length INT -> downcast='integer'
             df['year'], df['month'], df['day'] =  df['updated_date'].apply(lambda x: x.year), \
                                                 df['updated_date'].apply(lambda x: x.month), \
                                                 df['updated_date'].apply(lambda x: x.day)
@@ -71,6 +110,7 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
             for col in cols_date:
                 df[col] = pd.to_numeric(df[col], downcast='integer')
             
+            # Rule of Challenge -> Create "product_type" col and filters
             df['product_type'] = df['subtitle']
             filter = {
                 'Coca cola sin azúcar': ['Coca-Cola Sin Azúcar Retornable',
@@ -92,12 +132,14 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
                                 (df['product_type'] != 'Coca cola sin azúcar'.upper()) & \
                                 (df['product_type'] != 'Coca cola original'.upper())] = 'OTHER'
             
+            # Convert cols with numbers (for agg) to float
             cols_num = ['amount', 'quantity', 'units', 'retail_amount']
             for col in cols_num:
                 p = re.compile(r'(^[0-9]*[.,]{0,1}[0-9]*$)')
                 df[col] = df[col].str.extract(p, expand=False)
                 df[col] = pd.to_numeric(df[col], downcast='float')
-            
+
+            # Set cols type sqlalchemy
             dtypes = {}
             for i in df.dtypes.unique():
                 for k in df.columns[df.dtypes == i].tolist():
@@ -112,6 +154,7 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
                     else:
                         pass
             
+            ### Replace NaN values
             for i in df.dtypes.unique():
                 for k in df.columns[df.dtypes == i].tolist():
                     if 'obj' in str(i):
@@ -124,6 +167,7 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
                     else:
                         pass
             
+            ### Condition source and create normalized table
             if 'init' in file_source:
                 df.to_sql(name=name_table+'_INIT', con=engine, schema=cur_schema, if_exists='append', index=False, dtype=dtypes)
             elif 'increment' in file_source:
@@ -131,16 +175,34 @@ def create_fct_table(engine, stg_schema, cur_schema, file_source):
 
 
 def create_dim(engine, schema, file_source):
+    '''
+    Create dim tables
+
+    Parameters
+    ----------
+    engine : sqlalchemy engine
+        engine db
+    schema : str
+        schema db
+    file_source: str
+        name or extract of path in aws s3
+    
+    Returns
+    ---------
+    None
+    '''
+
     query_sys = """ SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema = '{}' """.format(schema)
     tables = pd.read_sql_query(query_sys, con=engine)
 
+    # Filter tables to use in db
     if 'init' in file_source:
         tables = tables.loc[tables['table_name'].str.contains('INIT')]
     elif 'increment' in file_source:
         tables = tables.loc[-tables['table_name'].str.contains('INIT')]
     else:
         pass
-
+    
     split_tables = {
     'CATEGORY': ['category_code', 'category_name', 'category_color'], 
     'MANUFACTER': ['manufacturer_id', 'manufacturer_name'],
@@ -149,7 +211,6 @@ def create_dim(engine, schema, file_source):
 
     for index, row in tables.iterrows():
         query = "".join(["SELECT * FROM ", '"',row['table_schema'],'"','."',row['table_name'],'"'])
-        print(query)
         
         for df in pd.read_sql_query(query, con=engine, chunksize=20000):
             if 'FCT_SALES_INIT' in query:

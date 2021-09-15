@@ -9,7 +9,7 @@ from sqlalchemy import types
 
 def ping_aws(client, bucket):
     '''
-    TEST CONNECTION WITH AWS
+    Test connection with AWS
 
     Parameters
     ----------
@@ -85,7 +85,7 @@ def extract(engine, config_aws, schema, bucket, file_source):
 
 def create_tables_work(engine, stg_schema, raw_schema, file_source):
     '''
-    CREATE TABLES WORK IN DB
+    Create tables work in DB
 
     Parameters
     ----------
