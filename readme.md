@@ -13,14 +13,17 @@
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
-Desarrollo de pipeline como respuesta el challenge.
+Desarrollo de pipeline como respuesta al challenge.
 El pipeline en desarollo integra:
 * AWS s3 como fuente de datos
 * Python como extractor y orquestador del flujo de datos.
     - Boto3, SDK de AWS, para conexion y manejo de los servicios cloud
     - Sqlalchemy para conexiones y ejecucion de scripts sql
     - Pandas para manipulacion de datos
+* Postgres
+* Pgadmin, interface de la base de datos
 * Docker como el integrador
+* Docker compose para el despliegue
 
 ### Pre-requisitos
 
@@ -37,6 +40,12 @@ El pipeline en desarollo integra:
    ```sh
    sudo docker-compose up
    ```
+3. Una vez deplago los contenedores se podra acceder a Pgadmin desde:
+   ```sh
+   localhost:5050
+   ```
+
+  
 
 <!-- USAGE EXAMPLES -->
 ## Pipeline roadmap
