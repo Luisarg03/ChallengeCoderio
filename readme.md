@@ -13,7 +13,11 @@
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
+<<<<<<< HEAD
 Desarrollo de pipeline como respuesta al challenge.
+=======
+Desarrollo de pipeline como respuesta al challenge de _Coderio.
+>>>>>>> 017309bb2ec2e1d6214d0aedcdd6dacf2ead2674
 El pipeline en desarollo integra:
 * AWS s3 como fuente de datos
 * Python como extractor y orquestador del flujo de datos.
