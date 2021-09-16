@@ -47,7 +47,7 @@ El pipeline en desarollo integra:
   * user: _admin@admin.com_
   * password: _root_
 
-<img src="img_readme/login.png" alt="Logo" width="65%">
+<img src="img_readme/login.png" alt="" width="65%">
 
 #### SERVER
   * host: _pg_container_
@@ -55,15 +55,16 @@ El pipeline en desarollo integra:
   * user: _root_
   * password: _root_
 
-<img src="img_readme/connect.png" alt="Logo" width="65%">
+<img src="img_readme/connect.png" alt="" width="65%">
 
-
+---
 <!-- USAGE EXAMPLES -->
 ## Pipeline roadmap
 
-* ADD Diagrams img
-* ADD explain pipeline
+<img src="img_readme/RoadmapPipeline.drawio.png" alt="" width="65%">
 
+
+---
 <!-- MISSING TASKS-->
 ## tareas que faltan completar
 
