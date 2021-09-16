@@ -87,7 +87,7 @@ El pipeline en desarollo integra:
 
 
 <!-- LICENSE -->
-## Licensia
+## Licencia
 
 free license for distribution 🖤
 
