@@ -17,8 +17,8 @@ config_user = dict(
 ### USER DUMMY -> Bucket with restrictions and limitations
 config_aws = dict(
     service_name='s3',
-    aws_access_key_id='AKIAYKHAW5NFPIOLKAUC',
-    aws_secret_access_key='4WkCZEuR/dYNVRRJqN7zQRdfRFMJsicjxlqFtbTg'
+    aws_access_key_id='-',
+    aws_secret_access_key='-'
 )
 
 ### CONFIG URI DB
